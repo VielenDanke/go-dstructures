@@ -30,6 +30,14 @@ func (bt *treeSet) Contains(val api.EqualHashRule) bool {
 	}
 }
 
+func (bt *treeSet) Remove(val api.EqualHashRule) api.EqualHashRule {
+	if bt.tm.Size() == 0 {
+		return nil
+	}
+	removedElem, _ := bt.tm.Remove(val)
+	return removedElem
+}
+
 func (bt *treeSet) Size() int {
 	return bt.tm.Size()
 }
