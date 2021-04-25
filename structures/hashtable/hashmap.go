@@ -12,6 +12,10 @@ type node struct {
 	next  *node
 }
 
+func (n *node) String() string {
+	return fmt.Sprintf("Node: {%v:%v}", n.key, n.value)
+}
+
 type linkedMap struct {
 	head *node
 	tail *node
@@ -33,6 +37,9 @@ func NewHashMap(capacity int) api.Map {
 }
 
 func (h *hashMap) Get(key api.EqualHashRule) interface{} {
+	if key == nil {
+		return nil
+	}
 	hash := h.hashFunction(key)
 	l := h.elements[hash]
 	if l == nil {
@@ -50,6 +57,9 @@ func (h *hashMap) Get(key api.EqualHashRule) interface{} {
 }
 
 func (h *hashMap) Put(key api.EqualHashRule, val interface{}) {
+	if key == nil {
+		return
+	}
 	if h.size+1 > int(float64(h.capacity)*h.loadFactor) {
 		h.capacity = h.capacity * 2
 		h.increaseMap()
@@ -84,6 +94,9 @@ func (h *hashMap) Put(key api.EqualHashRule, val interface{}) {
 }
 
 func (h *hashMap) Contains(key api.EqualHashRule) bool {
+	if key == nil {
+		return false
+	}
 	v := h.Get(key)
 	if v == nil {
 		return false
@@ -92,6 +105,9 @@ func (h *hashMap) Contains(key api.EqualHashRule) bool {
 }
 
 func (h *hashMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{}) {
+	if key == nil {
+		return nil, nil
+	}
 	hash := h.hashFunction(key)
 	l := h.elements[hash]
 	if l == nil {
@@ -101,6 +117,7 @@ func (h *hashMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{})
 			if l.head.key.Equal(key) {
 				temp := l.head
 				h.elements[hash] = nil
+				h.size--
 				return temp.key, temp.value
 			} else {
 				return nil, nil
@@ -112,6 +129,7 @@ func (h *hashMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{})
 					temp := current
 					current.prev.next = current.next
 					current.next.prev = current.prev
+					h.size--
 					return temp.key, temp.value
 				}
 				current = current.next
@@ -123,10 +141,6 @@ func (h *hashMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{})
 
 func (h *hashMap) Size() int {
 	return h.size
-}
-
-func (h *hashMap) String() string {
-	return fmt.Sprintf("Nodes: {%v}", h.elements)
 }
 
 func (h *hashMap) increaseMap() {

@@ -33,6 +33,7 @@ func (ht *treeMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{}
 		return nil, nil
 	} else {
 		tm := ht.elements[hash]
+		ht.size--
 		return tm.Remove(key)
 	}
 }

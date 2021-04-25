@@ -45,10 +45,37 @@ func TestHashMap_Get(t *testing.T) {
 func TestHashMap_Remove(t *testing.T) {
 	hm := prepareHashMap()
 
-	key, val := hm.Remove(cInt(5))
-	gv := hm.Get(cInt(5))
+	key5, val5 := hm.Remove(cInt(5))
+	key6, val6 := hm.Remove(cInt(6))
+	key7, val7 := hm.Remove(cInt(7))
 
-	assert.NotNil(t, key)
-	assert.NotNil(t, val)
-	assert.Nil(t, gv)
+	assert.NotNil(t, key5)
+	assert.NotNil(t, key6)
+	assert.NotNil(t, key7)
+	assert.NotNil(t, val5)
+	assert.NotNil(t, val6)
+	assert.NotNil(t, val7)
+	assert.False(t, hm.Contains(key5))
+	assert.False(t, hm.Contains(key6))
+	assert.False(t, hm.Contains(key7))
+	assert.Equal(t, prepareHashMap().Size() - 3, hm.Size())
+}
+
+func TestHashMap_PutNil(t *testing.T) {
+	hm := prepareHashMap()
+
+	hm.Put(nil, "abc")
+
+	v := hm.Get(nil)
+
+	assert.Nil(t, v)
+}
+
+func TestHashMap_Size(t *testing.T) {
+	hm := prepareHashMap()
+
+	hm.Put(cInt(503), "new value")
+	hm.Put(cInt(555), "good value")
+
+	assert.Equal(t, prepareHashMap().Size()+2, hm.Size())
 }
