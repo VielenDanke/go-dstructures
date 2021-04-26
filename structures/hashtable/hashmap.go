@@ -37,7 +37,7 @@ func NewHashMap(capacity int) api.Map {
 }
 
 func (h *hashMap) Get(key api.EqualHashRule) interface{} {
-	if key == nil {
+	if key == nil && h.Size() == 0 {
 		return nil
 	}
 	hash := h.hashFunction(key)
@@ -94,7 +94,7 @@ func (h *hashMap) Put(key api.EqualHashRule, val interface{}) {
 }
 
 func (h *hashMap) Contains(key api.EqualHashRule) bool {
-	if key == nil {
+	if key == nil && h.Size() == 0 {
 		return false
 	}
 	v := h.Get(key)
@@ -105,7 +105,7 @@ func (h *hashMap) Contains(key api.EqualHashRule) bool {
 }
 
 func (h *hashMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{}) {
-	if key == nil {
+	if key == nil && h.Size() == 0 {
 		return nil, nil
 	}
 	hash := h.hashFunction(key)

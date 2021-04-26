@@ -63,7 +63,7 @@ func TestTreeMap_Remove(t *testing.T) {
 	assert.False(t, tm.Contains(cInt(3)))
 	assert.False(t, tm.Contains(cInt(4)))
 	assert.False(t, tm.Contains(cInt(5)))
-	assert.Equal(t, prepareTreeMap().Size() - 3, tm.Size())
+	assert.Equal(t, prepareTreeMap().Size()-3, tm.Size())
 }
 
 func TestTreeMap_Size(t *testing.T) {

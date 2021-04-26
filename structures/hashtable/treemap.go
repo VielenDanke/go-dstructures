@@ -28,6 +28,9 @@ func NewTreeMap(capacity int, sortFunc api.Sort) (api.Map, error) {
 }
 
 func (ht *treeMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{}) {
+	if key == nil && ht.Size() == 0 {
+		return nil, nil
+	}
 	hash := ht.hashFunction(key)
 	if ht.elements[hash] == nil {
 		return nil, nil
@@ -39,6 +42,9 @@ func (ht *treeMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{}
 }
 
 func (ht *treeMap) Get(key api.EqualHashRule) interface{} {
+	if key == nil && ht.Size() == 0 {
+		return nil
+	}
 	hash := ht.hashFunction(key)
 	if ht.elements[hash] == nil {
 		return nil
@@ -49,6 +55,9 @@ func (ht *treeMap) Get(key api.EqualHashRule) interface{} {
 }
 
 func (ht *treeMap) Put(key api.EqualHashRule, val interface{}) {
+	if key == nil {
+		return
+	}
 	if ht.size+1 > int(float64(ht.capacity)*ht.loadFactor) {
 		ht.capacity = ht.capacity * 2
 		ht.increaseMap()
@@ -66,6 +75,9 @@ func (ht *treeMap) Put(key api.EqualHashRule, val interface{}) {
 }
 
 func (ht *treeMap) Contains(key api.EqualHashRule) bool {
+	if key == nil && ht.Size() == 0 {
+		return false
+	}
 	hash := ht.hashFunction(key)
 	tm := ht.elements[hash]
 	if tm == nil {
