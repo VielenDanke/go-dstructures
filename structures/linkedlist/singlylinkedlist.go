@@ -35,11 +35,22 @@ func (ll *singlyLinkedList) Remove(val api.EqualHashRule) (api.EqualHashRule, bo
 			return nil, false
 		}
 	} else {
+		temp := current
 		for current != nil {
-			if equalVal(current.val, val) {
+			v := current.val
+			if equalVal(v, val) {
 				ll.length--
-				return unlinkSingleNode(current).val, true
+				if equalVal(v, ll.head.val) {
+					ll.head = ll.head.next
+				} else if equalVal(v, ll.tail.val) {
+					temp.next = nil
+					ll.tail = temp
+				} else {
+					temp.next = current.next
+				}
+				return v, true
 			}
+			temp = current
 			current = current.next
 		}
 	}
@@ -271,11 +282,7 @@ func (ll *singlyLinkedList) removeNode(idx int) (*singleNode, bool) {
 		return nil, isFound
 	}
 	ll.length--
-	return unlinkSingleNode(prevNode), true
-}
-
-func unlinkSingleNode(prevNode *singleNode) (removed *singleNode) {
-	removed = prevNode.next
+	removed := prevNode.next
 	prevNode.next = removed.next
-	return
+	return removed, true
 }

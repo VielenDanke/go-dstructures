@@ -11,6 +11,14 @@ type node struct {
 	weight int64
 }
 
+func (n node) Equal(p interface{}) bool {
+	return true
+}
+
+func (n node) Hash() int {
+	return 1
+}
+
 type weightedGraph struct {
 	m map[string][]*node
 }
