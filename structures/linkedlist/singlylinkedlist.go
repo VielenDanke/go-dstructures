@@ -6,7 +6,7 @@ import (
 )
 
 type singleNode struct {
-	val  interface{}
+	val  api.EqualHashRule
 	next *singleNode
 }
 
@@ -20,15 +20,63 @@ func NewSinglyLinkedList() api.LinkedList {
 	return &singlyLinkedList{}
 }
 
-func (ll *singlyLinkedList) Enqueue(val interface{}) {
+func (ll *singlyLinkedList) Remove(val api.EqualHashRule) (api.EqualHashRule, bool) {
+	current := ll.head
+	if current == nil {
+		return nil, false
+	}
+	if ll.length == 1 {
+		if equalVal(current.val, val) {
+			ll.length--
+			ll.head = nil
+			ll.tail = nil
+			return current.val, true
+		} else {
+			return nil, false
+		}
+	} else {
+		for current != nil {
+			if equalVal(current.val, val) {
+				ll.length--
+				return unlinkSingleNode(current).val, true
+			}
+			current = current.next
+		}
+	}
+	return nil, false
+}
+
+func (ll *singlyLinkedList) Contains(val api.EqualHashRule) bool {
+	if ll.head == nil {
+		return false
+	}
+	if ll.length == 1 {
+		if equalVal(ll.head.val, val) {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		current := ll.head
+		for current != nil {
+			if equalVal(current.val, val) {
+				return true
+			}
+			current = current.next
+		}
+	}
+	return false
+}
+
+func (ll *singlyLinkedList) Enqueue(val api.EqualHashRule) {
 	ll.Push(val)
 }
 
-func (ll *singlyLinkedList) Dequeue() (interface{}, bool) {
+func (ll *singlyLinkedList) Dequeue() (api.EqualHashRule, bool) {
 	return ll.Shift()
 }
 
-func (ll *singlyLinkedList) Push(val interface{}) {
+func (ll *singlyLinkedList) Push(val api.EqualHashRule) {
 	n := &singleNode{val: val}
 	if ll.head == nil {
 		ll.head = n
@@ -40,7 +88,7 @@ func (ll *singlyLinkedList) Push(val interface{}) {
 	ll.length++
 }
 
-func (ll *singlyLinkedList) Pop() (interface{}, bool) {
+func (ll *singlyLinkedList) Pop() (api.EqualHashRule, bool) {
 	n, isFound := ll.popNode()
 	if !isFound {
 		return nil, false
@@ -48,7 +96,7 @@ func (ll *singlyLinkedList) Pop() (interface{}, bool) {
 	return n.val, true
 }
 
-func (ll *singlyLinkedList) Shift() (interface{}, bool) {
+func (ll *singlyLinkedList) Shift() (api.EqualHashRule, bool) {
 	n, isFound := ll.shiftNode()
 	if !isFound {
 		return nil, false
@@ -56,7 +104,7 @@ func (ll *singlyLinkedList) Shift() (interface{}, bool) {
 	return n.val, true
 }
 
-func (ll *singlyLinkedList) Unshift(val interface{}) {
+func (ll *singlyLinkedList) Unshift(val api.EqualHashRule) {
 	if ll.length == 0 {
 		ll.Push(val)
 	} else {
@@ -68,7 +116,7 @@ func (ll *singlyLinkedList) Unshift(val interface{}) {
 	ll.length++
 }
 
-func (ll *singlyLinkedList) Get(idx int) (interface{}, bool) {
+func (ll *singlyLinkedList) Get(idx int) (api.EqualHashRule, bool) {
 	n, isFound := ll.getNode(idx)
 	if !isFound {
 		return nil, false
@@ -76,7 +124,7 @@ func (ll *singlyLinkedList) Get(idx int) (interface{}, bool) {
 	return n.val, true
 }
 
-func (ll *singlyLinkedList) Set(idx int, val interface{}) (ok bool) {
+func (ll *singlyLinkedList) Set(idx int, val api.EqualHashRule) (ok bool) {
 	fNode, ok := ll.getNode(idx)
 	if !ok {
 		return ok
@@ -85,7 +133,7 @@ func (ll *singlyLinkedList) Set(idx int, val interface{}) (ok bool) {
 	return ok
 }
 
-func (ll *singlyLinkedList) Insert(idx int, val interface{}) (ok bool) {
+func (ll *singlyLinkedList) Insert(idx int, val api.EqualHashRule) (ok bool) {
 	if idx < 0 || idx > ll.length {
 		return
 	}
@@ -115,7 +163,7 @@ func (ll *singlyLinkedList) Insert(idx int, val interface{}) (ok bool) {
 	return
 }
 
-func (ll *singlyLinkedList) Remove(idx int) (interface{}, bool) {
+func (ll *singlyLinkedList) RemoveIdx(idx int) (api.EqualHashRule, bool) {
 	n, isRemoved := ll.removeNode(idx)
 	if !isRemoved {
 		return nil, false
@@ -141,7 +189,7 @@ func (ll *singlyLinkedList) Size() int {
 }
 
 func (ll *singlyLinkedList) String() string {
-	arr := make([]interface{}, 0)
+	arr := make([]api.EqualHashRule, 0)
 	current := ll.head
 	for current != nil {
 		arr = append(arr, current.val)
@@ -222,8 +270,12 @@ func (ll *singlyLinkedList) removeNode(idx int) (*singleNode, bool) {
 	if !isFound {
 		return nil, isFound
 	}
-	removed := prevNode.next
-	prevNode.next = removed.next
 	ll.length--
-	return removed, true
+	return unlinkSingleNode(prevNode), true
+}
+
+func unlinkSingleNode(prevNode *singleNode) (removed *singleNode) {
+	removed = prevNode.next
+	prevNode.next = removed.next
+	return
 }

@@ -2,12 +2,15 @@ package api
 
 type LinkedList interface {
 	StructureSize
-	Stack
-	Shift() (interface{}, bool)
-	Unshift(val interface{})
-	Get(idx int) (interface{}, bool)
-	Set(idx int, val interface{}) bool
-	Insert(idx int, val interface{}) bool
-	Remove(idx int) (interface{}, bool)
+	Push(val EqualHashRule)
+	Pop() (EqualHashRule, bool)
+	Shift() (EqualHashRule, bool)
+	Unshift(val EqualHashRule)
+	Get(idx int) (EqualHashRule, bool)
+	Set(idx int, val EqualHashRule) bool
+	Insert(idx int, val EqualHashRule) bool
+	RemoveIdx(idx int) (EqualHashRule, bool)
+	Remove(val EqualHashRule) (EqualHashRule, bool)
+	Contains(val EqualHashRule) bool
 	Reverse()
 }

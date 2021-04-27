@@ -8,28 +8,73 @@ import (
 type node struct {
 	prev *node
 	next *node
-	val  interface{}
+	val  api.EqualHashRule
 }
 
-type doublyLinkedList struct {
+type linkedList struct {
 	head   *node
 	tail   *node
 	length int
 }
 
-func NewDoublyLinkedList() api.LinkedList {
-	return &doublyLinkedList{}
+func NewLinkedList() api.LinkedList {
+	return &linkedList{}
 }
 
-func (dl *doublyLinkedList) Enqueue(val interface{}) {
+func (dl *linkedList) Remove(val api.EqualHashRule) (api.EqualHashRule, bool) {
+	if dl.head == nil {
+		return nil, false
+	}
+	if dl.length == 1 {
+		fVal := dl.head.val
+		if equalVal(fVal, val) {
+			dl.head = nil
+			dl.tail = nil
+			dl.length--
+			return fVal, true
+		} else {
+			return nil, false
+		}
+	} else {
+		current := dl.head
+		for current != nil {
+			if equalVal(current.val, val) {
+				dl.length--
+				unlinkNode(current)
+				return current.val, true
+			}
+			current = current.next
+		}
+	}
+	return nil, false
+}
+
+func (dl *linkedList) Contains(val api.EqualHashRule) bool {
+	if dl.head == nil {
+		return false
+	}
+	if dl.length == 1 {
+		return equalVal(dl.head.val, val)
+	}
+	current := dl.head
+	for current != nil {
+		if equalVal(current.val, val) {
+			return true
+		}
+		current = current.next
+	}
+	return false
+}
+
+func (dl *linkedList) Enqueue(val api.EqualHashRule) {
 	dl.Push(val)
 }
 
-func (dl *doublyLinkedList) Dequeue() (interface{}, bool) {
+func (dl *linkedList) Dequeue() (api.EqualHashRule, bool) {
 	return dl.Shift()
 }
 
-func (dl *doublyLinkedList) Push(val interface{}) {
+func (dl *linkedList) Push(val api.EqualHashRule) {
 	n := &node{val: val}
 	if dl.head == nil {
 		dl.head = n
@@ -42,7 +87,7 @@ func (dl *doublyLinkedList) Push(val interface{}) {
 	dl.length++
 }
 
-func (dl *doublyLinkedList) Pop() (interface{}, bool) {
+func (dl *linkedList) Pop() (api.EqualHashRule, bool) {
 	n, isPopped := dl.popNode()
 	if !isPopped {
 		return nil, false
@@ -50,7 +95,7 @@ func (dl *doublyLinkedList) Pop() (interface{}, bool) {
 	return n.val, true
 }
 
-func (dl *doublyLinkedList) Shift() (interface{}, bool) {
+func (dl *linkedList) Shift() (api.EqualHashRule, bool) {
 	n, isShifted := dl.shiftNode()
 	if !isShifted {
 		return nil, false
@@ -58,7 +103,7 @@ func (dl *doublyLinkedList) Shift() (interface{}, bool) {
 	return n.val, true
 }
 
-func (dl *doublyLinkedList) Unshift(val interface{}) {
+func (dl *linkedList) Unshift(val api.EqualHashRule) {
 	n := &node{val: val}
 	if dl.length == 0 {
 		dl.head = n
@@ -72,7 +117,7 @@ func (dl *doublyLinkedList) Unshift(val interface{}) {
 	dl.length++
 }
 
-func (dl *doublyLinkedList) Get(idx int) (interface{}, bool) {
+func (dl *linkedList) Get(idx int) (api.EqualHashRule, bool) {
 	n, isFound := dl.getNode(idx)
 	if !isFound {
 		return nil, false
@@ -80,7 +125,7 @@ func (dl *doublyLinkedList) Get(idx int) (interface{}, bool) {
 	return n.val, true
 }
 
-func (dl *doublyLinkedList) Set(idx int, val interface{}) bool {
+func (dl *linkedList) Set(idx int, val api.EqualHashRule) bool {
 	foundNode, isFound := dl.getNode(idx)
 	if !isFound {
 		return isFound
@@ -89,7 +134,7 @@ func (dl *doublyLinkedList) Set(idx int, val interface{}) bool {
 	return isFound
 }
 
-func (dl *doublyLinkedList) Insert(idx int, val interface{}) bool {
+func (dl *linkedList) Insert(idx int, val api.EqualHashRule) bool {
 	if idx < 0 || idx > dl.length {
 		return false
 	}
@@ -113,7 +158,7 @@ func (dl *doublyLinkedList) Insert(idx int, val interface{}) bool {
 	return true
 }
 
-func (dl *doublyLinkedList) Remove(idx int) (interface{}, bool) {
+func (dl *linkedList) RemoveIdx(idx int) (api.EqualHashRule, bool) {
 	n, isRemoved := dl.removeNode(idx)
 	if !isRemoved {
 		return nil, false
@@ -121,7 +166,7 @@ func (dl *doublyLinkedList) Remove(idx int) (interface{}, bool) {
 	return n.val, true
 }
 
-func (dl *doublyLinkedList) Reverse() {
+func (dl *linkedList) Reverse() {
 	head := &node{val: dl.tail.val}
 	tail := &node{val: dl.head.val}
 	nextNode := dl.tail
@@ -142,12 +187,12 @@ func (dl *doublyLinkedList) Reverse() {
 	dl.tail = tail
 }
 
-func (dl *doublyLinkedList) Size() int {
+func (dl *linkedList) Size() int {
 	return dl.length
 }
 
-func (dl *doublyLinkedList) String() string {
-	arr := make([]interface{}, 0)
+func (dl *linkedList) String() string {
+	arr := make([]api.EqualHashRule, 0)
 	curr := dl.head
 	for curr != nil {
 		arr = append(arr, curr.val)
@@ -156,7 +201,7 @@ func (dl *doublyLinkedList) String() string {
 	return fmt.Sprintf("%v", arr)
 }
 
-func (dl *doublyLinkedList) removeNode(idx int) (foundNode *node, isFound bool) {
+func (dl *linkedList) removeNode(idx int) (foundNode *node, isFound bool) {
 	if idx < 0 || idx >= dl.length {
 		return
 	}
@@ -169,17 +214,21 @@ func (dl *doublyLinkedList) removeNode(idx int) (foundNode *node, isFound bool) 
 		if !isFound {
 			return
 		}
-		foundNode.prev.next = foundNode.next
-		foundNode.next.prev = foundNode.prev
-		foundNode.prev = nil
-		foundNode.next = nil
+		unlinkNode(foundNode)
 	}
 	dl.length--
 	isFound = true
 	return
 }
 
-func (dl *doublyLinkedList) popNode() (*node, bool) {
+func unlinkNode(foundNode *node) {
+	foundNode.prev.next = foundNode.next
+	foundNode.next.prev = foundNode.prev
+	foundNode.prev = nil
+	foundNode.next = nil
+}
+
+func (dl *linkedList) popNode() (*node, bool) {
 	var remove *node
 	if dl.head == nil {
 		return nil, false
@@ -197,7 +246,7 @@ func (dl *doublyLinkedList) popNode() (*node, bool) {
 	return remove, true
 }
 
-func (dl *doublyLinkedList) shiftNode() (*node, bool) {
+func (dl *linkedList) shiftNode() (*node, bool) {
 	if dl.length == 0 {
 		return nil, false
 	}
@@ -214,7 +263,7 @@ func (dl *doublyLinkedList) shiftNode() (*node, bool) {
 	return head, true
 }
 
-func (dl *doublyLinkedList) getNode(idx int) (*node, bool) {
+func (dl *linkedList) getNode(idx int) (*node, bool) {
 	var foundNode *node
 	if idx < 0 || idx >= dl.length {
 		return nil, false
@@ -238,4 +287,14 @@ func (dl *doublyLinkedList) getNode(idx int) (*node, bool) {
 		}
 	}
 	return foundNode, true
+}
+
+func equalVal(fVal, sVal api.EqualHashRule) bool {
+	if fVal == nil && sVal == nil {
+		return true
+	}
+	if fVal != nil && sVal != nil {
+		return fVal.Equal(sVal)
+	}
+	return false
 }
