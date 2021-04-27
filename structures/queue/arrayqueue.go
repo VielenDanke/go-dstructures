@@ -6,18 +6,18 @@ import (
 )
 
 type arrayQueue struct {
-	elements []interface{}
+	elements []api.EqualHashRule
 }
 
 func NewArrayQueue() api.Queue {
 	return &arrayQueue{}
 }
 
-func (aq *arrayQueue) Enqueue(val interface{}) {
+func (aq *arrayQueue) Enqueue(val api.EqualHashRule) {
 	aq.elements = append(aq.elements, val)
 }
 
-func (aq *arrayQueue) Dequeue() (interface{}, bool) {
+func (aq *arrayQueue) Dequeue() (api.EqualHashRule, bool) {
 	if len(aq.elements) == 0 {
 		return nil, false
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 type priorityQueue struct {
-	elements     []interface{}
+	elements     []api.EqualHashRule
 	calcPriority func(elem interface{}) int
 }
 
@@ -15,12 +15,12 @@ func NewPriorityQueue(calcPriority func(elem interface{}) int) api.Queue {
 	return &priorityQueue{calcPriority: calcPriority}
 }
 
-func (p *priorityQueue) Enqueue(val interface{}) {
+func (p *priorityQueue) Enqueue(val api.EqualHashRule) {
 	p.elements = append(p.elements, val)
 	p.enqueueWithPriority()
 }
 
-func (p *priorityQueue) Dequeue() (interface{}, bool) {
+func (p *priorityQueue) Dequeue() (api.EqualHashRule, bool) {
 	if p.Size() == 0 {
 		return nil, false
 	}

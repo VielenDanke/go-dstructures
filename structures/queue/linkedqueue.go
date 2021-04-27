@@ -6,7 +6,7 @@ import (
 )
 
 type node struct {
-	val interface{}
+	val api.EqualHashRule
 	next *node
 }
 
@@ -20,7 +20,7 @@ func NewLinkedQueue() api.Queue {
 	return &linkedQueue{}
 }
 
-func (lq *linkedQueue) Enqueue(val interface{}) {
+func (lq *linkedQueue) Enqueue(val api.EqualHashRule) {
 	n := &node{val: val}
 	if lq.length == 0 {
 		lq.first = n
@@ -32,7 +32,7 @@ func (lq *linkedQueue) Enqueue(val interface{}) {
 	lq.length++
 }
 
-func (lq *linkedQueue) Dequeue() (interface{}, bool) {
+func (lq *linkedQueue) Dequeue() (api.EqualHashRule, bool) {
 	if lq.length == 0 {
 		return nil, false
 	}

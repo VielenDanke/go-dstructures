@@ -40,7 +40,7 @@ func (dl *linkedList) Remove(val api.EqualHashRule) (api.EqualHashRule, bool) {
 		for current != nil {
 			if equalVal(current.val, val) {
 				dl.length--
-				unlinkNode(current)
+				dl.unlinkNode(current)
 				return current.val, true
 			}
 			current = current.next
@@ -175,7 +175,7 @@ func (dl *linkedList) Reverse() {
 		n := &node{val: nextNode.prev.val}
 		tempHead.next = n
 		n.prev = tempHead
-		if i == dl.length - 1 {
+		if i == dl.length-1 {
 			tempHead.next = tail
 			tail.prev = tempHead
 		} else {
@@ -214,14 +214,24 @@ func (dl *linkedList) removeNode(idx int) (foundNode *node, isFound bool) {
 		if !isFound {
 			return
 		}
-		unlinkNode(foundNode)
+		dl.unlinkNode(foundNode)
 	}
 	dl.length--
 	isFound = true
 	return
 }
 
-func unlinkNode(foundNode *node) {
+func (dl *linkedList) unlinkNode(foundNode *node) {
+	if foundNode.prev == nil {
+		dl.head = foundNode.next
+		dl.head.prev = nil
+		return
+	}
+	if foundNode.next == nil {
+		dl.tail = foundNode.prev
+		dl.tail.next = nil
+		return
+	}
 	foundNode.prev.next = foundNode.next
 	foundNode.next.prev = foundNode.prev
 	foundNode.prev = nil
