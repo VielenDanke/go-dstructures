@@ -6,18 +6,18 @@ import (
 )
 
 type arrayStack struct {
-	elements []interface{}
+	elements []api.EqualHashRule
 }
 
 func NewArrayStack() api.Stack {
 	return &arrayStack{}
 }
 
-func (as *arrayStack) Push(val interface{}) {
+func (as *arrayStack) Push(val api.EqualHashRule) {
 	as.elements = append(as.elements, val)
 }
 
-func (as *arrayStack) Pop() (val interface{}, isFound bool) {
+func (as *arrayStack) Pop() (val api.EqualHashRule, isFound bool) {
 	if len(as.elements) == 0 {
 		return
 	}

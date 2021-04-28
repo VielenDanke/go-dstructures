@@ -20,6 +20,15 @@ type rbTreeNode struct {
 	color  int
 }
 
+func (rbt *rbTreeNode) Equal(p interface{}) bool {
+	incTreeNode := p.(*rbTreeNode)
+	return rbt.key.Equal(incTreeNode.key)
+}
+
+func (rbt *rbTreeNode) Hash() int {
+	return rbt.key.Hash()
+}
+
 func (rbt *rbTreeNode) String() string {
 	return fmt.Sprintf("Node: {%v:%v}", rbt.key, rbt.value)
 }

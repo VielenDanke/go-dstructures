@@ -6,7 +6,7 @@ import (
 )
 
 type node struct {
-	val  interface{}
+	val  api.EqualHashRule
 	next *node
 }
 
@@ -20,7 +20,7 @@ func NewLinkedStack() api.Stack {
 	return &linkedStack{}
 }
 
-func (lls *linkedStack) Push(val interface{}) {
+func (lls *linkedStack) Push(val api.EqualHashRule) {
 	newNode := &node{val: val}
 	if lls.length == 0 {
 		lls.first = newNode
@@ -33,7 +33,7 @@ func (lls *linkedStack) Push(val interface{}) {
 	lls.length++
 }
 
-func (lls *linkedStack) Pop() (val interface{}, isFound bool) {
+func (lls *linkedStack) Pop() (val api.EqualHashRule, isFound bool) {
 	if lls.length == 0 {
 		return
 	}
@@ -55,7 +55,7 @@ func (lls *linkedStack) Size() int {
 }
 
 func (lls *linkedStack) String() string {
-	arr := make([]interface{}, 0)
+	arr := make([]api.EqualHashRule, 0)
 	curr := lls.first
 	for curr != nil {
 		arr = append(arr, curr.val)

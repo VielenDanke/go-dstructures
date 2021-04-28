@@ -2,6 +2,6 @@ package api
 
 type Stack interface {
 	StructureSize
-	Push(val interface{})
-	Pop() (interface{}, bool)
+	Push(val EqualHashRule)
+	Pop() (EqualHashRule, bool)
 }
