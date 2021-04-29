@@ -6,4 +6,5 @@ type Map interface {
 	Put(key EqualHashRule, val interface{})
 	Contains(key EqualHashRule) bool
 	Remove(key EqualHashRule) (EqualHashRule, interface{})
+	KeySet() []EqualHashRule
 }

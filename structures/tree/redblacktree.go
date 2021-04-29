@@ -118,12 +118,16 @@ func (r *rbTree) Get(key api.EqualHashRule) interface{} {
 	}
 }
 
+func (r *rbTree) ToArray() []api.EqualHashRule {
+	return r.breadthForSearchKeys()
+}
+
 func (r *rbTree) Size() int {
 	return r.length
 }
 
 func (r *rbTree) String() string {
-	return fmt.Sprintf("Nodes: {%v}", r.breadthForSearch())
+	return fmt.Sprintf("Nodes: {%v}", r.breadthForSearchNodes())
 }
 
 func (r *rbTree) findRBNode(n *rbTreeNode, key api.EqualHashRule) (res *rbTreeNode) {
@@ -419,7 +423,29 @@ func parentNodeOf(node *rbTreeNode) *rbTreeNode {
 	return nil
 }
 
-func (r *rbTree) breadthForSearch() (res []*rbTreeNode) {
+func (r *rbTree) breadthForSearchKeys() []api.EqualHashRule {
+	res := make([]api.EqualHashRule, 0)
+	if r.root == nil {
+		return nil
+	}
+	q := queue.NewArrayQueue()
+	q.Enqueue(r.root)
+
+	for q.Size() != 0 {
+		elem, _ := q.Dequeue()
+		n := elem.(*rbTreeNode)
+		res = append(res, n.key)
+		if n.left != nil {
+			q.Enqueue(n.left)
+		}
+		if n.right != nil {
+			q.Enqueue(n.right)
+		}
+	}
+	return res
+}
+
+func (r *rbTree) breadthForSearchNodes() (res []*rbTreeNode) {
 	if r.root == nil {
 		return
 	}

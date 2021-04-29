@@ -5,6 +5,14 @@ import (
 	"testing"
 )
 
+func TestHashMap_KeySet(t *testing.T) {
+	hm := prepareHashMap()
+
+	ks := hm.KeySet()
+
+	assert.NotNil(t, ks)
+	assert.Equal(t, hm.Size(), len(ks))
+}
 
 func TestHashMap_Put(t *testing.T) {
 	hm := prepareHashMap()
@@ -58,7 +66,7 @@ func TestHashMap_Remove(t *testing.T) {
 	assert.False(t, hm.Contains(key5))
 	assert.False(t, hm.Contains(key6))
 	assert.False(t, hm.Contains(key7))
-	assert.Equal(t, prepareHashMap().Size() - 3, hm.Size())
+	assert.Equal(t, prepareHashMap().Size()-3, hm.Size())
 }
 
 func TestHashMap_PutNil(t *testing.T) {

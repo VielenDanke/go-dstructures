@@ -16,7 +16,7 @@ func (c cInt) Hash() int {
 	return int(c)
 }
 
-func prepareRbTreeMap() api.Map {
+func prepareRbTreeMap() api.Tree {
 	rb := NewRBTree(func(leftKey interface{}, rightKey interface{}) bool {
 		l := leftKey.(cInt)
 		r := rightKey.(cInt)

@@ -1,8 +1,10 @@
 package api
 
 type Graph interface {
-	AddVertex(val string)
-	AddEdge(fVertex string, sVertex string)
-	RemoveEdge(fVertex string, sVertex string)
-	RemoveVertex(fVertex string) bool
+	StructureSize
+	AddVertex(val EqualHashRule) bool
+	AddEdge(fVertex EqualHashRule, sVertex EqualHashRule) bool
+	RemoveEdge(fVertex EqualHashRule, sVertex EqualHashRule) bool
+	RemoveVertex(fVertex EqualHashRule) bool
+	ToArray() []EqualHashRule
 }

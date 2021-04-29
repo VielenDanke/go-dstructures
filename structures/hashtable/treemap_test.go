@@ -75,3 +75,13 @@ func TestTreeMap_Size(t *testing.T) {
 
 	assert.Equal(t, prepareTreeMap().Size()+3, tm.Size())
 }
+
+
+func TestTreeMap_KeySet(t *testing.T) {
+	tm := prepareTreeMap()
+
+	ks := tm.KeySet()
+
+	assert.NotNil(t, ks)
+	assert.Equal(t, tm.Size(), len(ks))
+}

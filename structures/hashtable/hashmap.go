@@ -139,6 +139,20 @@ func (h *hashMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{})
 	return nil, nil
 }
 
+func (h *hashMap) KeySet() []api.EqualHashRule {
+	result := make([]api.EqualHashRule, 0)
+	for _, v := range h.elements {
+		if v != nil {
+			current := v.head
+			for current != nil {
+				result = append(result, current.key)
+				current = current.next
+			}
+		}
+	}
+	return result
+}
+
 func (h *hashMap) Size() int {
 	return h.size
 }

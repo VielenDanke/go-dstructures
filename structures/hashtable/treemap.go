@@ -91,6 +91,16 @@ func (ht *treeMap) Size() int {
 	return ht.size
 }
 
+func (ht *treeMap) KeySet() []api.EqualHashRule {
+	result := make([]api.EqualHashRule, 0)
+	for _, v := range ht.elements {
+		if v != nil {
+			result = append(result, v.ToArray()...)
+		}
+	}
+	return result
+}
+
 func (ht *treeMap) hashFunction(key api.EqualHashRule) (idx int) {
 	prime := 31
 	if key == nil {

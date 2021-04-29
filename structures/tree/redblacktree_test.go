@@ -6,6 +6,15 @@ import (
 	"testing"
 )
 
+func TestRbTree_ToArray(t *testing.T) {
+	rb := prepareRbTreeMap()
+
+	arr := rb.ToArray()
+
+	assert.NotNil(t, arr)
+	assert.Equal(t, rb.Size(), len(arr))
+}
+
 func TestRbTree_String(t *testing.T) {
 	rb := prepareRbTreeMap()
 
