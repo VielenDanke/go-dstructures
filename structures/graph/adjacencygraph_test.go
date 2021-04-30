@@ -28,8 +28,8 @@ func TestAdjacencyGraph_AddVertex(t *testing.T) {
 func TestAdjacencyGraph_AddEdge(t *testing.T) {
 	ag := prepareAdjacencyGraph()
 
-	e1 := ag.AddEdge(cInt(15), cInt(12))
-	e2 := ag.AddEdge(cInt(15), cInt(45))
+	e1 := ag.AddEdge(cInt(15), cInt(12), 0)
+	e2 := ag.AddEdge(cInt(15), cInt(45), 0)
 
 	assert.True(t, e1)
 	assert.False(t, e2)

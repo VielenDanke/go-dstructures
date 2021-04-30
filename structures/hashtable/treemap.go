@@ -63,6 +63,7 @@ func (ht *treeMap) Put(key api.EqualHashRule, val interface{}) {
 		ht.increaseMap()
 	}
 	hash := ht.hashFunction(key)
+
 	if ht.elements[hash] != nil {
 		tm := ht.elements[hash]
 		tm.Put(key, val)

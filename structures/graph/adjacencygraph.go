@@ -14,7 +14,7 @@ func NewAdjacencyGraph() api.Graph {
 	return &adjacencyGraph{m: hashtable.NewHashMap(16)}
 }
 
-func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule) bool {
+func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule, weight int64) bool {
 	f := a.m.Get(fVertex)
 	s := a.m.Get(sVertex)
 	if f == nil || s == nil {
@@ -103,7 +103,7 @@ func (a *adjacencyGraph) ToArray() []api.EqualHashRule {
 }
 
 func (a *adjacencyGraph) Size() int {
-	return a.length
+	return a.m.Size()
 }
 
 func (a *adjacencyGraph) Contains(vertex api.EqualHashRule) bool {

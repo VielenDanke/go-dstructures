@@ -21,7 +21,7 @@ func fillGraph(g api.Graph) api.Graph {
 	for i := 1; i < 21; i++ {
 		g.AddVertex(cInt(i))
 		if i % 2 == 0 {
-			g.AddEdge(cInt(i), cInt(i-1))
+			g.AddEdge(cInt(i), cInt(i-1), 0)
 		}
 	}
 	return g

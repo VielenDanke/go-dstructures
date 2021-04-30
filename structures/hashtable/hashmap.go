@@ -83,14 +83,15 @@ func (h *hashMap) Put(key api.EqualHashRule, val interface{}) {
 			temp.next = newNode
 			l.tail = newNode
 			l.tail.prev = temp
+			h.size++
 		}
 	} else {
 		nm := &linkedMap{}
 		nm.head = newNode
 		nm.tail = newNode
 		h.elements[hash] = nm
+		h.size++
 	}
-	h.size++
 }
 
 func (h *hashMap) Contains(key api.EqualHashRule) bool {
