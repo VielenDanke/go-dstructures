@@ -17,7 +17,7 @@ func NewAdjacencyGraph() api.Graph {
 func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule) bool {
 	f := a.m.Get(fVertex)
 	s := a.m.Get(sVertex)
-	if f == nil && s == nil {
+	if f == nil || s == nil {
 		return false
 	}
 	fArr := f.([]api.EqualHashRule)
@@ -40,19 +40,23 @@ func (a *adjacencyGraph) AddVertex(val api.EqualHashRule) bool {
 }
 
 func (a *adjacencyGraph) RemoveEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule) bool {
-	f := a.m.Get(fVertex).([]api.EqualHashRule)
-	s := a.m.Get(sVertex).([]api.EqualHashRule)
+	f := a.m.Get(fVertex)
+	s := a.m.Get(sVertex)
+
 	if f != nil && s != nil {
-		for k, v := range f {
+		fConv := f.([]api.EqualHashRule)
+		sConv := s.([]api.EqualHashRule)
+
+		for k, v := range fConv {
 			if v.Equal(sVertex) {
-				f = append(f[:k], f[k+1:]...)
-				a.m.Put(fVertex, f)
+				fConv = append(fConv[:k], fConv[k+1:]...)
+				a.m.Put(fVertex, fConv)
 			}
 		}
-		for k, v := range s {
+		for k, v := range sConv {
 			if v.Equal(fVertex) {
-				s = append(s[:k], s[k+1:]...)
-				a.m.Put(sVertex, s)
+				sConv = append(sConv[:k], sConv[k+1:]...)
+				a.m.Put(sVertex, sConv)
 			}
 		}
 	} else {
@@ -62,11 +66,14 @@ func (a *adjacencyGraph) RemoveEdge(fVertex api.EqualHashRule, sVertex api.Equal
 }
 
 func (a *adjacencyGraph) RemoveVertex(fVertex api.EqualHashRule) bool {
-	fArr := a.m.Get(fVertex).([]api.EqualHashRule)
+	fArr := a.m.Get(fVertex)
+
 	if fArr == nil {
 		return false
 	}
-	for _, v := range fArr {
+	convArr := fArr.([]api.EqualHashRule)
+
+	for _, v := range convArr {
 		temp := a.m.Get(v).([]api.EqualHashRule)
 		if temp != nil {
 			for k, tv := range temp {
@@ -82,12 +89,30 @@ func (a *adjacencyGraph) RemoveVertex(fVertex api.EqualHashRule) bool {
 	return true
 }
 
+func (a *adjacencyGraph) GetEdges(vertex api.EqualHashRule) []api.EqualHashRule {
+	edges := a.m.Get(vertex)
+
+	if edges == nil {
+		return nil
+	}
+	return edges.([]api.EqualHashRule)
+}
+
 func (a *adjacencyGraph) ToArray() []api.EqualHashRule {
 	return a.m.KeySet()
 }
 
 func (a *adjacencyGraph) Size() int {
 	return a.length
+}
+
+func (a *adjacencyGraph) Contains(vertex api.EqualHashRule) bool {
+	for _, v := range a.ToArray() {
+		if v.Equal(vertex) {
+			return true
+		}
+	}
+	return false
 }
 
 func (a *adjacencyGraph) recursiveInvoker(arr []api.EqualHashRule, m api.Map) {
