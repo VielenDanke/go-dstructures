@@ -5,4 +5,5 @@ type Set interface {
 	Add(val EqualHashRule)
 	Contains(val EqualHashRule) bool
 	Remove(val EqualHashRule) EqualHashRule
+	ToArray() []EqualHashRule
 }

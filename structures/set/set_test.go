@@ -39,7 +39,7 @@ func prepareTreeSet() api.Set {
 }
 
 func fillWithData(s api.Set) {
-	for i := 1; i < 20; i++ {
+	for i := 1; i < 21; i++ {
 		is := strconv.Itoa(i)
 		s.Add(cStr("abc" + is))
 	}

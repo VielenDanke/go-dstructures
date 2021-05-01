@@ -13,6 +13,10 @@ func NewHashSet() api.Set {
 	return &hashSet{m: hashtable.NewHashMap(16)}
 }
 
+func (h *hashSet) ToArray() []api.EqualHashRule {
+	return h.m.KeySet()
+}
+
 func (h *hashSet) Size() int {
 	return h.m.Size()
 }

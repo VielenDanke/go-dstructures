@@ -153,6 +153,7 @@ func (r *rbTree) insertNewRBNode(n *rbTreeNode, toInsert *rbTreeNode) {
 		return
 	}
 	toInsert.parent = n
+
 	if r.sortFunc(n.key, toInsert.key) {
 		if n.left == nil {
 			n.left = toInsert

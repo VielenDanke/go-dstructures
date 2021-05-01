@@ -66,13 +66,16 @@ func (ht *treeMap) Put(key api.EqualHashRule, val interface{}) {
 
 	if ht.elements[hash] != nil {
 		tm := ht.elements[hash]
-		tm.Put(key, val)
+		if !tm.Contains(key) {
+			tm.Put(key, val)
+			ht.size++
+		}
 	} else {
 		tm := tree.NewRBTree(ht.sortFunc)
 		tm.Put(key, val)
 		ht.elements[hash] = tm
+		ht.size++
 	}
-	ht.size++
 }
 
 func (ht *treeMap) Contains(key api.EqualHashRule) bool {

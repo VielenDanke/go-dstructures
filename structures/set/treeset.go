@@ -17,6 +17,10 @@ func NewTreeSet(sortFunc func(left interface{}, right interface{}) bool) (api.Se
 	return &treeSet{tm: hm}, nil
 }
 
+func (bt *treeSet) ToArray() []api.EqualHashRule {
+	return bt.tm.KeySet()
+}
+
 func (bt *treeSet) Add(val api.EqualHashRule) {
 	bt.tm.Put(val, nil)
 }

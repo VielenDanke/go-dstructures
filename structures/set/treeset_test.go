@@ -50,3 +50,22 @@ func TestTreeSet_Remove(t *testing.T) {
 	assert.False(t, c3)
 	assert.False(t, c4)
 }
+
+func TestTreeSet_Size(t *testing.T) {
+	ts := prepareTreeSet()
+
+	ts.Add(cStr("bla"))
+	ts.Add(cStr("uuu"))
+	ts.Add(cStr("abc3"))
+
+	assert.Equal(t, prepareTreeSet().Size() + 2, ts.Size())
+}
+
+func TestTreeSet_ToArray(t *testing.T) {
+	ts := prepareTreeSet()
+
+	arr := ts.ToArray()
+
+	assert.NotNil(t, arr)
+	assert.Equal(t, prepareTreeSet().Size(), len(arr))
+}
