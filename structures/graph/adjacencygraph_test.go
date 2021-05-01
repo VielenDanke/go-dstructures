@@ -17,11 +17,9 @@ func TestAdjacencyGraph_ToArray(t *testing.T) {
 func TestAdjacencyGraph_AddVertex(t *testing.T) {
 	ag := prepareAdjacencyGraph()
 
-	v1 := ag.AddVertex(cInt(15))
-	v2 := ag.AddVertex(cInt(21))
+	ag.AddVertex(cInt(15))
+	ag.AddVertex(cInt(21))
 
-	assert.False(t, v1)
-	assert.True(t, v2)
 	assert.Equal(t, prepareAdjacencyGraph().Size()+1, ag.Size())
 }
 

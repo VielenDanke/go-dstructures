@@ -7,14 +7,13 @@ import (
 
 type adjacencyGraph struct {
 	m      api.Map
-	length int
 }
 
 func NewAdjacencyGraph() api.Graph {
 	return &adjacencyGraph{m: hashtable.NewHashMap(16)}
 }
 
-func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule, weight int64) bool {
+func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule, _ int64) bool {
 	f := a.m.Get(fVertex)
 	s := a.m.Get(sVertex)
 
@@ -42,14 +41,8 @@ func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHas
 	return true
 }
 
-func (a *adjacencyGraph) AddVertex(val api.EqualHashRule) bool {
-	f := a.m.Get(val)
-	if f != nil {
-		return false
-	}
+func (a *adjacencyGraph) AddVertex(val api.EqualHashRule) {
 	a.m.Put(val, make([]api.EqualHashRule, 0))
-	a.length++
-	return true
 }
 
 func (a *adjacencyGraph) RemoveEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule) bool {
@@ -98,7 +91,6 @@ func (a *adjacencyGraph) RemoveVertex(fVertex api.EqualHashRule) bool {
 		a.m.Put(v, temp)
 	}
 	a.m.Remove(fVertex)
-	a.length--
 	return true
 }
 
@@ -120,21 +112,10 @@ func (a *adjacencyGraph) Size() int {
 }
 
 func (a *adjacencyGraph) Contains(vertex api.EqualHashRule) bool {
-	for _, v := range a.ToArray() {
-		if v.Equal(vertex) {
-			return true
-		}
+	vtx := a.m.Get(vertex)
+
+	if vtx != nil {
+		return true
 	}
 	return false
-}
-
-func (a *adjacencyGraph) recursiveInvoker(arr []api.EqualHashRule, m api.Map) {
-	for _, v := range arr {
-		if m.Get(v) != nil {
-			m.Put(v, true)
-			a.recursiveInvoker(a.m.Get(v).([]api.EqualHashRule), m)
-		} else {
-			continue
-		}
-	}
 }

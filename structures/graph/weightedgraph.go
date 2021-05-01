@@ -24,7 +24,6 @@ func (n node) Hash() int {
 
 type weightedGraph struct {
 	m api.Map
-
 }
 
 func NewWeightedGraph() api.Graph {
@@ -36,32 +35,84 @@ func (wg *weightedGraph) Size() int {
 }
 
 func (wg *weightedGraph) RemoveEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule) bool {
-	panic("implement me")
+	f := wg.m.Get(fVertex)
+	s := wg.m.Get(sVertex)
+
+	if f != nil && s != nil {
+		fConv := f.([]*node)
+		sConv := s.([]*node)
+
+		for k, v := range fConv {
+			if v.vertex.Equal(sVertex) {
+				fConv = append(fConv[:k], fConv[k+1:]...)
+				wg.m.Put(fVertex, fConv)
+			}
+		}
+		for k, v := range sConv {
+			if v.vertex.Equal(fVertex) {
+				sConv = append(sConv[:k], sConv[k+1:]...)
+				wg.m.Put(sVertex, sConv)
+			}
+		}
+	} else {
+		return false
+	}
+	return true
 }
 
 func (wg *weightedGraph) RemoveVertex(fVertex api.EqualHashRule) bool {
-	panic("implement me")
+	fArr := wg.m.Get(fVertex)
+
+	if fArr == nil {
+		return false
+	}
+	convArr := fArr.([]*node)
+
+	for _, v := range convArr {
+		temp := wg.m.Get(v.vertex).([]*node)
+		if temp != nil {
+			for k, tv := range temp {
+				if tv.vertex.Equal(fVertex) {
+					temp = append(temp[:k], temp[k+1:]...)
+				}
+			}
+		}
+		wg.m.Put(v.vertex, temp)
+	}
+	wg.m.Remove(fVertex)
+	return true
 }
 
 func (wg *weightedGraph) Contains(vertex api.EqualHashRule) bool {
-	panic("implement me")
+	vtx := wg.m.Get(vertex)
+
+	if vtx != nil {
+		return true
+	}
+	return false
 }
 
 func (wg *weightedGraph) GetEdges(vertex api.EqualHashRule) []api.EqualHashRule {
-	panic("implement me")
+	vtx := wg.m.Get(vertex)
+
+	if vtx == nil {
+		return nil
+	}
+	edges := make([]api.EqualHashRule, 0)
+	vtxEdges := vtx.([]*node)
+
+	for _, v := range vtxEdges {
+		edges = append(edges, v.vertex)
+	}
+	return edges
 }
 
 func (wg *weightedGraph) ToArray() []api.EqualHashRule {
-	panic("implement me")
+	return wg.m.KeySet()
 }
 
-func (wg *weightedGraph) AddVertex(vertex api.EqualHashRule) bool {
-	res := wg.m.Get(vertex)
-	if res != nil {
-		return false
-	}
+func (wg *weightedGraph) AddVertex(vertex api.EqualHashRule) {
 	wg.m.Put(vertex, make([]*node, 0))
-	return true
 }
 
 func (wg *weightedGraph) AddEdge(fVertex, sVertex api.EqualHashRule, weight int64) bool {

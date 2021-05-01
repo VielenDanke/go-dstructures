@@ -12,6 +12,11 @@ func (c cInt) Hash() int {
 	return int(c)
 }
 
+func prepareWeightedGraph() api.Graph {
+	ag := NewWeightedGraph()
+	return fillGraph(ag)
+}
+
 func prepareAdjacencyGraph() api.Graph {
 	ag := NewAdjacencyGraph()
 	return fillGraph(ag)

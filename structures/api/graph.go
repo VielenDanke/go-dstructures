@@ -2,7 +2,7 @@ package api
 
 type Graph interface {
 	StructureSize
-	AddVertex(val EqualHashRule) bool
+	AddVertex(val EqualHashRule)
 	AddEdge(fVertex EqualHashRule, sVertex EqualHashRule, weight int64) bool
 	RemoveEdge(fVertex EqualHashRule, sVertex EqualHashRule) bool
 	RemoveVertex(fVertex EqualHashRule) bool
