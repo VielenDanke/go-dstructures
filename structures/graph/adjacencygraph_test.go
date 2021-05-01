@@ -30,9 +30,11 @@ func TestAdjacencyGraph_AddEdge(t *testing.T) {
 
 	e1 := ag.AddEdge(cInt(15), cInt(12), 0)
 	e2 := ag.AddEdge(cInt(15), cInt(45), 0)
+	e3 := ag.AddEdge(cInt(15), cInt(12), 0)
 
 	assert.True(t, e1)
 	assert.False(t, e2)
+	assert.False(t, e3)
 }
 
 func TestAdjacencyGraph_RemoveVertex(t *testing.T) {

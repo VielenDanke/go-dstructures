@@ -65,15 +65,29 @@ func (wg *weightedGraph) AddVertex(vertex api.EqualHashRule) bool {
 }
 
 func (wg *weightedGraph) AddEdge(fVertex, sVertex api.EqualHashRule, weight int64) bool {
-	//fNodes, fOk := wg.m[fVertex]
-	//sNodes, sOk := wg.m[sVertex]
-	//if !fOk || !sOk {
-	//	return
-	//}
-	//fNodes = append(fNodes, &node{vertex: sVertex, weight: weight})
-	//sNodes = append(sNodes, &node{vertex: fVertex, weight: weight})
-	//wg.m[fVertex] = fNodes
-	//wg.m[sVertex] = sNodes
+	f := wg.m.Get(fVertex)
+	s := wg.m.Get(sVertex)
+	if f == nil || s == nil {
+		return false
+	}
+	fNodes := f.([]*node)
+	sNodes := s.([]*node)
+
+	var isExists bool
+
+	for _, v := range fNodes {
+		if v.Equal(&node{vertex: sVertex}) {
+			isExists = true
+		}
+	}
+	if !isExists {
+		fNodes = append(fNodes, &node{vertex: sVertex, weight: weight})
+		sNodes = append(sNodes, &node{vertex: fVertex, weight: weight})
+		wg.m.Put(fVertex, fNodes)
+		wg.m.Put(sVertex, sNodes)
+	} else {
+		return false
+	}
 	return true
 }
 
@@ -83,7 +97,8 @@ func (wg *weightedGraph) AddEdge(fVertex, sVertex api.EqualHashRule, weight int6
 //		n := elem.(*node)
 //		return int(n.weight)
 //	})
-//	distances := make(map[string]int64)
+//	distances := make(map
+//	[string]int64)
 //	previous := make(map[string]string)
 //	var smallest *node
 //

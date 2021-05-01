@@ -17,15 +17,28 @@ func NewAdjacencyGraph() api.Graph {
 func (a *adjacencyGraph) AddEdge(fVertex api.EqualHashRule, sVertex api.EqualHashRule, weight int64) bool {
 	f := a.m.Get(fVertex)
 	s := a.m.Get(sVertex)
+
 	if f == nil || s == nil {
 		return false
 	}
 	fArr := f.([]api.EqualHashRule)
 	sArr := f.([]api.EqualHashRule)
-	fArr = append(fArr, sVertex)
-	sArr = append(sArr, fVertex)
-	a.m.Put(fVertex, fArr)
-	a.m.Put(sVertex, sArr)
+
+	var isExists bool
+
+	for _, v := range fArr {
+		if v.Equal(sVertex) {
+			isExists = true
+		}
+	}
+	if !isExists {
+		fArr = append(fArr, sVertex)
+		sArr = append(sArr, fVertex)
+		a.m.Put(fVertex, fArr)
+		a.m.Put(sVertex, sArr)
+	} else {
+		return false
+	}
 	return true
 }
 
