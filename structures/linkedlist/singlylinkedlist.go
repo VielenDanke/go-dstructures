@@ -199,14 +199,18 @@ func (ll *singlyLinkedList) Size() int {
 	return ll.length
 }
 
-func (ll *singlyLinkedList) String() string {
+func (ll *singlyLinkedList) ToArray() []api.EqualHashRule {
 	arr := make([]api.EqualHashRule, 0)
 	current := ll.head
 	for current != nil {
 		arr = append(arr, current.val)
 		current = current.next
 	}
-	return fmt.Sprintf("%v", arr)
+	return arr
+}
+
+func (ll *singlyLinkedList) String() string {
+	return fmt.Sprintf("%v", ll.ToArray())
 }
 
 func (ll *singlyLinkedList) popNode() (toFind *singleNode, isFound bool) {

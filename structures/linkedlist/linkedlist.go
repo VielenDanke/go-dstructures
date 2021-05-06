@@ -191,14 +191,18 @@ func (dl *linkedList) Size() int {
 	return dl.length
 }
 
-func (dl *linkedList) String() string {
+func (dl *linkedList) ToArray() []api.EqualHashRule {
 	arr := make([]api.EqualHashRule, 0)
 	curr := dl.head
 	for curr != nil {
 		arr = append(arr, curr.val)
 		curr = curr.next
 	}
-	return fmt.Sprintf("%v", arr)
+	return arr
+}
+
+func (dl *linkedList) String() string {
+	return fmt.Sprintf("%v", dl.ToArray())
 }
 
 func (dl *linkedList) removeNode(idx int) (foundNode *node, isFound bool) {
