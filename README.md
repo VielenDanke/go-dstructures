@@ -7,7 +7,7 @@ The key interface to work with - EqualHashRule.
 It needs for correct equality in unique structures,
 also hash needed in HashSet, HashMap, TreeSet, TreeMap structures. 
 
-Example of using EqualHashRule interfaces:
+Example of using EqualHashRule interface:
 ````
 type cStr string
 
