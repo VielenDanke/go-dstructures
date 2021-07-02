@@ -42,8 +42,8 @@ All next data structures contains those methods. Keep in mind
 Simple representation of FIFO based on array
 
 #### BigO
-Contains - O(N)
-Enqueue - O(1)
+Contains - O(N)  
+Enqueue - O(1)  
 Dequeue - O(1)
 
 #### Creation and methods
