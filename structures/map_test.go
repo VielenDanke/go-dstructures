@@ -12,7 +12,7 @@ func prepareHashMap() api.Map {
 }
 
 func prepareTreeMap() api.Map {
-	tm, _ := newTreeMap(16, func(leftKey interface{}, rightKey interface{}) bool {
+	tm, _ := NewTreeMap(16, func(leftKey interface{}, rightKey interface{}) bool {
 		l := leftKey.(cInt)
 		r := rightKey.(cInt)
 		return r > l

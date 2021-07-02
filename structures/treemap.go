@@ -14,7 +14,7 @@ type treeMap struct {
 	loadFactor float64
 }
 
-func newTreeMap(capacity int, sortFunc api.Sort) (api.Map, error) {
+func NewTreeMap(capacity int, sortFunc api.Sort) (api.Map, error) {
 	if sortFunc == nil {
 		return nil, errors.New("sort func is not present")
 	}

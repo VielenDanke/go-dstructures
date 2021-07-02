@@ -1,5 +1,5 @@
 package api
 
 type StructureSize interface {
-	 Size() int
+	Size() int
 }

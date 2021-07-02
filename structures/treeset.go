@@ -11,7 +11,7 @@ type treeSet struct {
 }
 
 func NewTreeSet(sortFunc func(left interface{}, right interface{}) bool) (api.Set, error) {
-	hm, err := newTreeMap(16, sortFunc)
+	hm, err := NewTreeMap(16, sortFunc)
 	if err != nil {
 		return nil, err
 	}

@@ -14,7 +14,7 @@ func TestTreeSet_Add(t *testing.T) {
 
 	assert.Equal(t, prepareTreeSet().Size()+1, ts.Size())
 	assert.True(t, ts.Contains(cStr(testData)))
-	assert.False(t, ts.Contains(cStr(testData + "abc")))
+	assert.False(t, ts.Contains(cStr(testData+"abc")))
 }
 
 func TestTreeSet_Contains(t *testing.T) {
@@ -59,7 +59,7 @@ func TestTreeSet_Size(t *testing.T) {
 	ts.Add(cStr("uuu"))
 	ts.Add(cStr("abc3"))
 
-	assert.Equal(t, prepareTreeSet().Size() + 2, ts.Size())
+	assert.Equal(t, prepareTreeSet().Size()+2, ts.Size())
 }
 
 func TestTreeSet_ToArray(t *testing.T) {
