@@ -96,8 +96,8 @@ The main idea described here https://en.wikipedia.org/wiki/Binary_heap
 
 #### BigO
 
-Insertion - O(logN)
-Removal - O(logN)
+Insertion - O(logN)  
+Removal - O(logN)  
 Search - O(N)
 
 #### Creation and methods
