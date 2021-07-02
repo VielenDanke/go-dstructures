@@ -35,6 +35,8 @@ type Structure interface {
 ````
 All next data structures contains those methods. Keep in mind
 
+---
+
 ## Data structures
 
 ### Array Queue
