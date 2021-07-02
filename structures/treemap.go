@@ -27,6 +27,10 @@ func NewTreeMap(capacity int, sortFunc api.Sort) (api.Map, error) {
 	return ht, nil
 }
 
+func (ht *treeMap) ToArray() []api.EqualHashRule {
+	panic("implement me")
+}
+
 func (ht *treeMap) Remove(key api.EqualHashRule) (api.EqualHashRule, interface{}) {
 	if key == nil && ht.Size() == 0 {
 		return nil, nil

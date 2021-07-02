@@ -14,6 +14,20 @@ func NewArrayQueue() api.Queue {
 	return &arrayQueue{}
 }
 
+func (aq *arrayQueue) Contains(val api.EqualHashRule) bool {
+	for _, v := range aq.elements {
+		isEqual := v.Equal(val)
+		if isEqual {
+			return true
+		}
+	}
+	return false
+}
+
+func (aq *arrayQueue) ToArray() []api.EqualHashRule {
+	return aq.elements
+}
+
 func (aq *arrayQueue) Enqueue(val api.EqualHashRule) {
 	aq.elements = append(aq.elements, val)
 }

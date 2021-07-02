@@ -1,7 +1,6 @@
 package api
 
 type Tree interface {
-	StructureSize
 	Structure
 	Get(key EqualHashRule) interface{}
 	Put(key EqualHashRule, val interface{})

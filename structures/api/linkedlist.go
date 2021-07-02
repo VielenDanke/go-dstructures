@@ -1,7 +1,6 @@
 package api
 
 type LinkedList interface {
-	StructureSize
 	Structure
 	Push(val EqualHashRule)
 	Pop() (EqualHashRule, bool)

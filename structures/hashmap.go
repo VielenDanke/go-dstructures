@@ -37,6 +37,10 @@ func NewHashMap(capacity int) api.Map {
 	}
 }
 
+func (h *hashMap) ToArray() []api.EqualHashRule {
+	panic("implement me")
+}
+
 func (h *hashMap) Get(key api.EqualHashRule) interface{} {
 	if key == nil && h.Size() == 0 {
 		return nil

@@ -21,14 +21,22 @@ func NewLinkedStack() api.Stack {
 	return &linkedStack{}
 }
 
+func (lls *linkedStack) ToArray() []api.EqualHashRule {
+	panic("implement me")
+}
+
+func (lls *linkedStack) Contains(val api.EqualHashRule) bool {
+	panic("implement me")
+}
+
 func (lls *linkedStack) Push(val api.EqualHashRule) {
-	newstackNode := &stackNode{val: val}
+	sn := &stackNode{val: val}
 	if lls.length == 0 {
-		lls.first = newstackNode
-		lls.last = newstackNode
+		lls.first = sn
+		lls.last = sn
 	} else {
 		temp := lls.first
-		lls.first = newstackNode
+		lls.first = sn
 		lls.first.next = temp
 	}
 	lls.length++

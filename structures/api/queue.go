@@ -1,7 +1,7 @@
 package api
 
 type Queue interface {
-	StructureSize
+	Structure
 	Enqueue(val EqualHashRule)
 	Dequeue() (EqualHashRule, bool)
 }

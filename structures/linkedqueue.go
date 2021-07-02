@@ -21,6 +21,14 @@ func NewLinkedQueue() api.Queue {
 	return &linkedQueue{}
 }
 
+func (lq *linkedQueue) Contains(val api.EqualHashRule) bool {
+	panic("implement me")
+}
+
+func (lq *linkedQueue) ToArray() []api.EqualHashRule {
+	panic("implement me")
+}
+
 func (lq *linkedQueue) Enqueue(val api.EqualHashRule) {
 	n := &queueNode{val: val}
 	if lq.length == 0 {

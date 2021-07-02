@@ -1,7 +1,7 @@
 package api
 
 type Map interface {
-	StructureSize
+	Structure
 	Get(key EqualHashRule) interface{}
 	Put(key EqualHashRule, val interface{})
 	Contains(key EqualHashRule) bool

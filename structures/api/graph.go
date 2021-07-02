@@ -1,7 +1,6 @@
 package api
 
 type Graph interface {
-	StructureSize
 	Structure
 	AddVertex(val EqualHashRule)
 	AddEdge(fVertex EqualHashRule, sVertex EqualHashRule, weight int64) bool

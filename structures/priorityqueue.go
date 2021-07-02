@@ -16,6 +16,14 @@ func NewPriorityQueue(calcPriority func(elem interface{}) int) api.Queue {
 	return &priorityQueue{calcPriority: calcPriority}
 }
 
+func (p *priorityQueue) Contains(val api.EqualHashRule) bool {
+	panic("implement me")
+}
+
+func (p *priorityQueue) ToArray() []api.EqualHashRule {
+	panic("implement me")
+}
+
 func (p *priorityQueue) Enqueue(val api.EqualHashRule) {
 	p.elements = append(p.elements, val)
 	p.enqueueWithPriority()

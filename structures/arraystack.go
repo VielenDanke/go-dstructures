@@ -14,6 +14,19 @@ func NewArrayStack() api.Stack {
 	return &arrayStack{}
 }
 
+func (as *arrayStack) Contains(val api.EqualHashRule) bool {
+	for _, v := range as.elements {
+		if v.Equal(val) {
+			return true
+		}
+	}
+	return false
+}
+
+func (as *arrayStack) ToArray() []api.EqualHashRule {
+	return as.elements
+}
+
 func (as *arrayStack) Push(val api.EqualHashRule) {
 	as.elements = append(as.elements, val)
 }
